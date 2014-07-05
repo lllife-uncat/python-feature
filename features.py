@@ -10,6 +10,44 @@ $ python -m unittest features
 import unittest
 class FeatureTest(unittest.TestCase) :
 
+    def testDictComprehension(self) :
+        """ Create dict with for expression """
+        mdict = { i: i**2 for i in range(5) }
+        target = { 0:0, 1:1, 2:4, 3:9, 4:16 }
+        self.assertEqual(mdict, target)
+
+    def testNamedFormat(self) :
+        message = "The %(foo)s is %(bar)i" % { "foo": "answer", "bar": 42 }
+        self.assertEqual(message, "The answer is 42")
+
+        foo, bar = "question", 123
+        message = "The %(foo)s is %(bar)i" % locals()
+        self.assertEqual(message , "The question is 123")
+
+        message = "The {foo} is {bar}".format(foo= "answer", bar=42)
+        self.assertEqual(message, "The answer is 42")
+
+    def testDictionaryGet(self) :
+        """ If you do mdict.get('key')
+        and key isn't there, you got back None not an excption.
+        """
+        mdict = { "x": 100, "y": 200 }
+        self.assertEqual(mdict.get("x"), 100)
+        self.assertEqual(mdict.get("y"), 200)
+        self.assertEqual(mdict.get("z"), None)
+
+    def testCreateDynamicType(self) :
+        """ Createing new types in fully dynamic manner """
+        MyType = type("MyType", (object,), { "x": 100, "y": 200 })
+        mt = MyType()
+        self.assertEqual(mt.x, 100)
+        self.assertEqual(mt.y, 200)
+
+    def testChainingComparison(self) :
+        """  Chaining comparision operator """
+        self.assertTrue( 1 < 2 < 3)
+        self.assertTrue( 10 > 5 < 6)
+
     def testGetAttribute(self) :
         """ The getattr build-in function """
         class C() :
